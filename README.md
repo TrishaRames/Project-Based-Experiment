@@ -1,3 +1,5 @@
+NAME:R.TRISHA
+REGISTER NUMBER :212224100061
 ### Project-Based-Experiment
 
 **AIM:**
@@ -41,16 +43,128 @@ From the HDL code given formulate the correct code  to divert the traffic to pa
 5.	For different input combinations generate the timing diagram
    
 **Program:**
+```
 
-/* Program to implement the given logic function and to verify its operations in quartus using Verilog programming. 
+module sp1(
+    input clk,
+    output reg red1,
+    output reg yellow1,
+    output reg green1,
+    output reg red2,
+    output reg yellow2,
+    output reg green2,
+    output reg red3,
+    output reg yellow3,
+    output reg green3
+);
 
-Developed by: RegisterNumber:*/
+// State machine definition
+parameter S_IDLE = 2'b00;
+parameter S_ROAD1 = 2'b01;
+parameter S_ROAD2 = 2'b10;
+parameter S_ROAD3 = 2'b11;
 
+reg [1:0] state;
+reg [3:0] count;
+
+always @(posedge clk) begin
+    // State transition
+    case(state)
+        S_IDLE: begin
+            count <= count + 1;
+            if (count == 5) begin
+                state <= S_ROAD1;
+                count <= 0;
+            end
+        end
+        S_ROAD1: begin
+            count <= count + 1;
+            if (count == 5) begin
+                state <= S_ROAD2;
+                count <= 0;
+            end
+        end
+        S_ROAD2: begin
+            count <= count + 1;
+            if (count == 5) begin
+                state <= S_ROAD3;
+                count <= 0;
+            end
+        end
+        S_ROAD3: begin
+            count <= count + 1;
+            if (count == 5) begin
+                state <= S_IDLE;
+                count <= 0;
+            end
+        end
+    endcase
+end
+
+// Traffic light control logic
+always @(*) begin
+    case(state)
+        S_IDLE: begin
+            red1 = 1;
+            yellow1 = (count >= 1 && count <= 4) ? 1 : 0;
+            green1 = 0;
+            red2 = 1;
+            yellow2 = 0;
+            green2 = 0;
+            red3 = 1;
+            yellow3 = 0;
+            green3 = 0;
+        end
+        S_ROAD1: begin
+            red1 = 0;
+            yellow1 = (count >= 6 && count <= 9) ? 1 : 0;
+            green1 = (count >= 1 && count <= 5) ? 1 : 0;
+            red2 = 1;
+            yellow2 = (count >= 6 && count <= 9) ? 1 : 0;
+            green2 = 0;
+            red3 = 1;
+            yellow3 = 0;
+            green3 = 0;
+        end
+        S_ROAD2: begin
+            red1 = 1;
+            yellow1 = 0;
+            green1 = 0;
+            red2 = 0;
+            yellow2 = (count >= 1 && count <= 4) ? 1 : 0;
+            green2 = (count >= 6 && count <= 9) ? 1 : 0;
+            red3 = 1;
+            yellow3 = (count >= 6 && count <= 9) ? 1 : 0;
+            green3 = 0;
+        end
+        S_ROAD3: begin
+            red1 = 1;
+            yellow1 = 0;
+            green1 = 0;
+            red2 = 1;
+            yellow2 = 0;
+            green2 = 0;
+            red3 = 0;
+            yellow3 = (count >= 1 && count <= 4) ? 1 : 0;
+            green3 = (count >= 6 && count <= 9) ? 1 : 0;
+        end
+    endcase
+end
+
+endmodule
+
+```
 **RTL Schematic**
+
+![Screenshot 2025-04-25 143642](https://github.com/user-attachments/assets/e6bc12a2-46b3-45fd-9214-ce1b411875db)
 
 **Output Timing Waveform**
 
+![Screenshot 2025-04-25 143819](https://github.com/user-attachments/assets/fd94fced-838f-4b76-9d9c-c831fcd432c7)
+
 **Result:**
+
+ simulate the traffic light controller.
 
 
 
